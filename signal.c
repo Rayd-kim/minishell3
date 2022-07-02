@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: youskim <youskim@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: youskim <youskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 15:11:00 by youskim           #+#    #+#             */
-/*   Updated: 2022/07/01 15:11:01 by youskim          ###   ########.fr       */
+/*   Updated: 2022/07/03 00:00:35 by youskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,18 @@ void	kill_process(int *process)
 	}
 }
 
-// void setup_term(void)
-// {
-//     struct termios t;
+void setup_term(void)
+{
+    struct termios t;
 
-//     tcgetattr(0, &t);
-//     t.c_lflag &= ~ECHOCTL;
-//     tcsetattr(0, TCSANOW, &t);
-// }
+    tcgetattr(0, &t);
+    t.c_lflag &= ~ECHOCTL;
+    tcsetattr(0, TCSANOW, &t);
+}
 
 void	new_line(void)
 {
 	g_vari.status = 1;
-	rl_on_new_line();
-	rl_redisplay();
 	write (1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -57,12 +55,12 @@ void	signal_handler(int sig)
 	int		process;
 
 	kill_process(&process);
-	// setup_term();
+	setup_term();
 	if (sig == CTRL_C && g_vari.flag == 1 && process == 0)
 	{
 		g_vari.status = 130;
 		g_vari.flag = dup(0);
-		write (1, ">  \n", 4);
+		write (1, ">\n", 2);
 		close(0);
 	}
 	else if (sig == CTRL_C && process == 0 && g_vari.flag > 1)
@@ -77,7 +75,7 @@ void	signal_handler(int sig)
 	else if (sig == CTRL_C && process != 0)
 	{
 		g_vari.status = 130;
-		write (1, "\n", 1);
+		write (1, "^C\n", 3);
 	}
 }
 

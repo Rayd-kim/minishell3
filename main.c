@@ -6,7 +6,7 @@
 /*   By: youskim <youskim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 18:03:46 by youskim           #+#    #+#             */
-/*   Updated: 2022/06/27 23:07:35 by youskim          ###   ########.fr       */
+/*   Updated: 2022/07/02 23:59:45 by youskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	show_prompt(t_root *start, t_list *env)
 	char	*temp;
 
 	temp = readline("minishell >>");
-	g_vari.flag = 0;
 	if (temp != NULL && check_whitespace(temp) == 0)
 	{
 		if (do_minishell(start, env, temp) == 1)
@@ -104,11 +103,14 @@ int	main(int arg, char *argv[], char **envp)
 			exe_cmd (start, env);
 		}
 		reset_root(start);
-		if (g_vari.flag > 1)
+		if (g_vari.flag > 2)
 		{
 			g_vari.status = 1;
 			dup2 (g_vari.flag, 0);
+			g_vari.flag = 2;
 		}
+		else
+			g_vari.flag = 0;
 	}
 	return (0);
 }

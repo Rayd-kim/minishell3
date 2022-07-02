@@ -6,7 +6,7 @@
 #    By: youskim <youskim@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/24 18:03:09 by youskim           #+#    #+#              #
-#    Updated: 2022/06/27 23:28:06 by youskim          ###   ########.fr        #
+#    Updated: 2022/07/02 23:30:56 by youskim          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,10 @@ NAME = minishell
 
 CC = gcc -Werror -Wall -Wextra 
 
-INCLUDE = -I/Users/youskim/.brew/opt/readline/include
-LIB = -L/Users/youskim/.brew/opt/readline/lib
+# INCLUDE = -I/Users/youskim/.brew/opt/readline/include
+INCLUDE = -I/opt/homebrew/opt/readline/include
+LIB = -L/opt/homebrew/opt/readline/lib
+# LIB = -L/Users/youskim/.brew/opt/readline/lib
 
 # -g -fsanitize=address
 # gcc test.c -L/Users/youskim/.brew/opt/readline/lib -I/Users/youskim/.brew/opt/readline/include -lreadline
