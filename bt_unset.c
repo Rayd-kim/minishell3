@@ -1,50 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bt_env_and_unset.c                                 :+:      :+:    :+:   */
+/*   bt_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilim <ilim@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: youskim <youskim@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/01 16:54:11 by youskim           #+#    #+#             */
-/*   Updated: 2022/07/03 18:27:57 by ilim             ###   ########.fr       */
+/*   Created: 2022/07/03 18:58:44 by youskim           #+#    #+#             */
+/*   Updated: 2022/07/03 18:58:45 by youskim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	prt_env(t_list *env)
-{
-	t_list	*temp;
-
-	temp = env;
-	while (1)
-	{
-		if (temp != NULL)
-			printf("%s\n", temp->str);
-		else
-			break ;
-		temp = temp->next;
-	}
-}
-
-void	env_process(t_root *top, t_list *env)
-{
-	int		fd[2];
-
-	pipe(fd);
-	top->pid = fork();
-	if (top->pid == 0)
-	{
-		set_process_fd(top, fd);
-		prt_env(env);
-		exit(0);
-	}
-	if (pipe_check(top) == 0)
-		top->right->in_fd = fd[0];
-	if (top->in_fd != 0)
-		close (top->in_fd);
-	close (fd[1]);
-}
 
 void	delete_env(t_list *env_list, char *args)
 {
@@ -74,9 +40,9 @@ void	delete_env(t_list *env_list, char *args)
 	free(temp);
 }
 
-int check_num_alpha(char* args)
+int	check_num_alpha(char *args)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (args[i])
@@ -90,7 +56,7 @@ int check_num_alpha(char* args)
 	return (0);
 }
 
-void	bt_unset(char **args, t_list *env_list)
+void	bt_unset(char **args, t_list *env_list, t_root *top)
 {
 	int	i;
 	int	flag;
@@ -101,7 +67,8 @@ void	bt_unset(char **args, t_list *env_list)
 		return ;
 	while (args[++i] != NULL)
 	{
-		if (!ft_isalpha(args[i][0]) || ft_strchr(args[i], '=') || check_num_alpha(args[i]))
+		if (!ft_isalpha(args[i][0]) || ft_strchr(args[i], '=') || \
+			check_num_alpha(args[i]))
 		{
 			ft_putstr_fd("Minihsel: unset: `", STDERR_FILENO);
 			ft_putstr_fd(args[i], STDERR_FILENO);
@@ -109,7 +76,7 @@ void	bt_unset(char **args, t_list *env_list)
 			flag = 1;
 			g_vari.status = 1;
 		}
-		else
+		else if (top->in_fd == 0 && top->right == NULL)
 		{
 			delete_env(env_list, args[i]);
 			if (flag != 1)
@@ -123,9 +90,8 @@ void	unset_process(t_root *top, t_list *env)
 	int		fd[2];
 
 	pipe(fd);
-	if (top->left->right->arg != NULL && \
-		(top->in_fd == 0 && top->right == NULL))
-		bt_unset(top->left->right->arg, env);
+	if (top->left->right->arg != NULL)
+		bt_unset(top->left->right->arg, env, top);
 	if (pipe_check(top) == 0)
 		top->right->in_fd = fd[0];
 	else

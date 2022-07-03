@@ -82,6 +82,33 @@ int	check_pipe_close(char *str)
 	return (0);
 }
 
+void	check_redirection_close_2(char *str, int *i, int *arg)
+{
+	int	redi;
+
+	redi = 0;
+	while (str[*i] != '\0')
+	{
+		if (str[*i] == '>' && str[*i + 1] == '<')
+			break ;
+		else if (str[*i] == '<' && str[*i + 1] == '>')
+			break ;
+		else if (redi > 2)
+			break ;
+		else if ((str[*i] == '>' && redi <= 2) || (str[*i] == '<' && redi <= 2))
+		{
+			redi++;
+			*arg = 0;
+		}
+		else if (str[*i] != ' ')
+		{
+			redi = 0;
+			*arg += 1;
+		}
+		*i += 1;
+	}
+}
+
 int	check_redirection_close(char *str, char **split, char *temp)
 {
 	int	i;
@@ -89,18 +116,7 @@ int	check_redirection_close(char *str, char **split, char *temp)
 
 	arg = 0;
 	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '>' && str[i + 1] == '<')
-			break ;
-		else if (str[i] == '<' && str[i + 1] == '>')
-			break ;
-		else if (str[i] == '>' || str[i] == '<')
-			arg = 0;
-		else if (str[i] != ' ')
-			arg++;
-		i++;
-	}
+	check_redirection_close_2(str, &i, &arg);
 	if (str[i] != '\0' || arg == 0)
 	{
 		write (2, "Redirection error\n", 18);

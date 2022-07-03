@@ -52,7 +52,7 @@ int	check_valid(char *args, int i, int flag)
 {
 	while (args[i])
 	{
-		if (ft_isalpha(args[0]) && args[i] != '\0') // T1234.
+		if (ft_isalpha(args[0]) && args[i] != '\0')
 		{
 			if (args[i] == '=')
 			{

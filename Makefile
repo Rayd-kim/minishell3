@@ -15,8 +15,6 @@ NAME = minishell
 CC = gcc -Werror -Wall -Wextra 
 
 INCLUDE = -I/Users/youskim/.brew/opt/readline/include
-# INCLUDE = -I/opt/homebrew/opt/readline/include
-# LIB = -L/opt/homebrew/opt/readline/lib
 LIB = -L/Users/youskim/.brew/opt/readline/lib
 
 FILE = main.c \
@@ -36,7 +34,8 @@ FILE = main.c \
 		check_2.c \
 		bt_echo.c \
 		bt_pwd.c \
-		bt_env_and_unset.c \
+		bt_env.c \
+		bt_unset.c \
 		bt_exit.c \
 		bt_export_1.c \
 		bt_export_2.c \
