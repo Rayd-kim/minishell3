@@ -55,7 +55,7 @@ int	ft_exit_atoi(const char *str, int *check)
 		pm_num++;
 		i++;
 	}
-	if (pm_num > 1 && ft_strlen(str) > 19)
+	if (pm_num > 1 || ft_strlen(str) > 19)
 	{
 		*check = 1;
 		return (0);

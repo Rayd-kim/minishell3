@@ -17,6 +17,10 @@ void	do_execve_null(t_root *top)
 	int		fd[2];
 
 	pipe (fd);
+	top->pid = fork();
+	set_signal(SIGUSR2);
+	if (top->pid == 0)
+		set_process_fd(top, fd);
 	if (pipe_check(top) == 0)
 		top->right->in_fd = fd[0];
 	else
