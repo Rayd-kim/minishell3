@@ -6,7 +6,7 @@
 /*   By: ilim <ilim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 16:54:11 by youskim           #+#    #+#             */
-/*   Updated: 2022/07/02 16:01:00 by ilim             ###   ########.fr       */
+/*   Updated: 2022/07/03 18:27:57 by ilim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,22 @@ void	delete_env(t_list *env_list, char *args)
 	free(temp);
 }
 
+int check_num_alpha(char* args)
+{
+	int i;
+
+	i = 1;
+	while (args[i])
+	{
+		if (args[i] == '=')
+			return (1);
+		else if (!ft_isalpha(args[i]) && !ft_isdigit(args[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	bt_unset(char **args, t_list *env_list)
 {
 	int	i;
@@ -85,7 +101,7 @@ void	bt_unset(char **args, t_list *env_list)
 		return ;
 	while (args[++i] != NULL)
 	{
-		if (!ft_isalpha(args[i][0]) || ft_strchr(args[i], '='))
+		if (!ft_isalpha(args[i][0]) || ft_strchr(args[i], '=') || check_num_alpha(args[i]))
 		{
 			ft_putstr_fd("Minihsel: unset: `", STDERR_FILENO);
 			ft_putstr_fd(args[i], STDERR_FILENO);

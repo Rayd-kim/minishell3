@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bt_export.c                                        :+:      :+:    :+:   */
+/*   bt_export_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilim <ilim@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 16:01:11 by ilim              #+#    #+#             */
-/*   Updated: 2022/07/02 16:07:47 by ilim             ###   ########.fr       */
+/*   Updated: 2022/07/03 18:19:13 by ilim             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,9 @@ int	check_valid(char *args, int i, int flag)
 {
 	while (args[i])
 	{
-		if (ft_isalpha(args[0]) && args[i] != '\0')
+		if (ft_isalpha(args[0]) && args[i] != '\0') // T1234.
 		{
-			if ((args[i] >= 48 && args[i] <= 57) || ft_isalpha(args[i]))
-				;
-			else if (args[i] == '=')
+			if (args[i] == '=')
 			{
 				if (args[i + 1] == '\0' || i == 0)
 				{
@@ -64,6 +62,8 @@ int	check_valid(char *args, int i, int flag)
 					continue ;
 				}
 			}
+			else if (!ft_isdigit(args[i]) && !ft_isalpha(args[i]))
+				flag = 1;
 		}
 		else
 			flag = 1;
