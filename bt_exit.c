@@ -41,8 +41,10 @@ int	ft_exit_atoi(const char *str, int *check)
 	int	i;
 	int	sign;
 	int	result;
+	int	pm_num;
 
 	i = 0;
+	pm_num = 0;
 	sign = 1;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
@@ -50,7 +52,13 @@ int	ft_exit_atoi(const char *str, int *check)
 	{
 		if (str[i] == '-')
 			sign = -sign;
+		pm_num++;
 		i++;
+	}
+	if (pm_num > 1)
+	{
+		*check =  1;
+		return (0);
 	}
 	result = result_value(str, i, sign, check);
 	return (result);

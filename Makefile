@@ -14,10 +14,10 @@ NAME = minishell
 
 CC = gcc -Werror -Wall -Wextra 
 
-# INCLUDE = -I/Users/youskim/.brew/opt/readline/include
-INCLUDE = -I/opt/homebrew/opt/readline/include
-LIB = -L/opt/homebrew/opt/readline/lib
-# LIB = -L/Users/youskim/.brew/opt/readline/lib
+INCLUDE = -I/Users/youskim/.brew/opt/readline/include
+# INCLUDE = -I/opt/homebrew/opt/readline/include
+# LIB = -L/opt/homebrew/opt/readline/lib
+LIB = -L/Users/youskim/.brew/opt/readline/lib
 
 # -g -fsanitize=address
 # gcc test.c -L/Users/youskim/.brew/opt/readline/lib -I/Users/youskim/.brew/opt/readline/include -lreadline

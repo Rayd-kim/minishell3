@@ -32,13 +32,13 @@ void	kill_process(int *process)
 	}
 }
 
-void setup_term(void)
+void	setup_term(void)
 {
-    struct termios t;
+	struct termios	t;
 
-    tcgetattr(0, &t);
-    t.c_lflag &= ~ECHOCTL;
-    tcsetattr(0, TCSANOW, &t);
+	tcgetattr(0, &t);
+	t.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &t);
 }
 
 void	new_line(void)
@@ -85,7 +85,10 @@ void	signal_handler_2(int sig)
 
 	kill_process(&process);
 	if (process != 0 && sig == CTRL_SLASH)
+	{
+		g_vari.status = 131;
 		write (1, "Quit: 3\n", 8);
+	}
 }
 
 void	set_signal(int sig)
