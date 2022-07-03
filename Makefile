@@ -19,9 +19,6 @@ INCLUDE = -I/Users/youskim/.brew/opt/readline/include
 # LIB = -L/opt/homebrew/opt/readline/lib
 LIB = -L/Users/youskim/.brew/opt/readline/lib
 
-# -g -fsanitize=address
-# gcc test.c -L/Users/youskim/.brew/opt/readline/lib -I/Users/youskim/.brew/opt/readline/include -lreadline
-
 FILE = main.c \
 		make_node.c \
 		make_redirect.c \
