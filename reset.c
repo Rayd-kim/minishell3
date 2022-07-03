@@ -20,7 +20,8 @@ void	free_left(t_node *top)
 	node = top;
 	if (node->right != NULL)
 	{
-		free (node->right->cmd);
+		if (node->right->cmd != NULL)
+			free (node->right->cmd);
 		split_free (node->right->arg);
 		free (node->right);
 	}
@@ -29,8 +30,10 @@ void	free_left(t_node *top)
 	free (free_node);
 	while (node != NULL)
 	{
-		free (node->cmd);
-		free (node->redi);
+		if (node->cmd != NULL)
+			free (node->cmd);
+		if (node->redi != NULL)
+			free (node->redi);
 		free_node = node;
 		node = node->left;
 		free (free_node);
@@ -62,10 +65,21 @@ void	split_free(char **split)
 	int	i;
 
 	i = 0;
+	if (split == NULL)
+		return ;
 	while (split[i] != NULL)
 	{
 		free(split[i]);
 		i++;
 	}
 	free (split);
+}
+
+void	setup_term(void)
+{
+	struct termios	t;
+
+	tcgetattr(0, &t);
+	t.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &t);
 }

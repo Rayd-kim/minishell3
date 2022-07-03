@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <signal.h>
+# include <termios.h>
 # include "libft/libft.h"
 
 # define CTRL_C SIGINT
@@ -68,6 +69,7 @@ void	split_free(char **split);
 void	reset_root(t_root *start);
 void	error_stdin(char *str, int check);
 void	write_error(char *str);
+void	write_cd_error(int error_num, char *path);
 
 void	change_space(char *s);
 void	change_pipe(char *s);
@@ -118,4 +120,5 @@ int		check_alpha(char *args, int *ret);
 int		check_dup(char *args, t_list *env_list);
 
 void	set_signal(int sig);
+void	setup_term(void);
 #endif

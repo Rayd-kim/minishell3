@@ -26,10 +26,23 @@ char	*check_home(t_list *env)
 	return (NULL);
 }
 
-void	set_pwd(t_list *env, char *oldpwd, char *pwd)
+void	make_oldpwd(t_list *env, char *oldpwd)
 {
 	t_list	*temp;
 
+	temp = env;
+	while (temp->next != NULL)
+		temp = temp->next;
+	temp->next = make_list();
+	temp->next->str = ft_strjoin("OLDPWD=", oldpwd);
+}
+
+void	set_pwd(t_list *env, char *oldpwd, char *pwd)
+{
+	t_list	*temp;
+	int		old;
+
+	old = 0;
 	temp = env;
 	while (temp)
 	{
@@ -37,6 +50,7 @@ void	set_pwd(t_list *env, char *oldpwd, char *pwd)
 		{
 			free(temp->str);
 			temp->str = ft_strjoin("OLDPWD=", oldpwd);
+			old++;
 		}
 		if (ft_strncmp("PWD=", temp->str, 4) == 0)
 		{
@@ -45,18 +59,10 @@ void	set_pwd(t_list *env, char *oldpwd, char *pwd)
 		}
 		temp = temp->next;
 	}
+	if (old == 0)
+		make_oldpwd(env, oldpwd);
 	free(oldpwd);
 	free(pwd);
-}
-
-void	write_cd_error(int error_num, char *path)
-{
-	write_error ("Minishell: cd: ");
-	write_error (path);
-	write (2, ": ", 2);
-	write (2, strerror(error_num), ft_strlen(strerror(error_num)));
-	write (2, "\n", 1);
-	g_vari.status = error_num - 1;
 }
 
 void	bt_cd(char **arg, t_list *env, t_root *top)
@@ -66,7 +72,7 @@ void	bt_cd(char **arg, t_list *env, t_root *top)
 	char	*pwd;
 
 	oldpwd = getcwd(NULL, 0);
-	if (arg[1] == NULL || ft_strncmp(arg[1], "~", 2) == 0)
+	if (arg[1] == NULL)
 	{
 		home = check_home(env);
 		if (home == NULL)

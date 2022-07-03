@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <termios.h>
 
 void	kill_process(int *process)
 {
@@ -32,15 +31,6 @@ void	kill_process(int *process)
 	}
 }
 
-void	setup_term(void)
-{
-	struct termios	t;
-
-	tcgetattr(0, &t);
-	t.c_lflag &= ~ECHOCTL;
-	tcsetattr(0, TCSANOW, &t);
-}
-
 void	new_line(void)
 {
 	g_vari.status = 1;
@@ -55,7 +45,6 @@ void	signal_handler(int sig)
 	int		process;
 
 	kill_process(&process);
-	setup_term();
 	if (sig == CTRL_C && g_vari.flag == 1 && process == 0)
 	{
 		g_vari.status = 130;
@@ -87,7 +76,7 @@ void	signal_handler_2(int sig)
 	if (process != 0 && sig == CTRL_SLASH)
 	{
 		g_vari.status = 131;
-		write (1, "Quit: 3\n", 8);
+		write (1, "^\\Quit: 3\n", 10);
 	}
 }
 

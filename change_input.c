@@ -29,6 +29,8 @@ void	change_space(char *s)
 			single_q++;
 		else if (s[i] == ' ' && double_q % 2 == 0 && single_q % 2 == 0)
 			s[i] = (char)255;
+		else if (s[i] == '\t' && double_q % 2 == 0 && single_q % 2 == 0)
+			s[i] = (char)255;
 		i++;
 	}
 }

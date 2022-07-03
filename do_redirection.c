@@ -12,29 +12,22 @@
 
 #include "minishell.h"
 
-void	read_heredoc(t_root *top, int fd)
+void	check_heredoc_2(char *temp)
 {
-	int		len;
-	char	buffer[20];
-
-	len = read (top->in_fd, buffer, 20);
-	while (len != 0)
-	{
-		write (fd, buffer, ft_strlen(buffer));
-		len = read (top->in_fd, buffer, 20);
-	}
+	if (temp != NULL)
+		free (temp);
+	else
+		g_vari.flag = 2;
 }
 
-int	check_heredoc(char *name, t_root *top)
+int	check_heredoc(char *name)
 {
 	char	*temp;
 	int		fd[2];
 
 	g_vari.flag = 1;
 	pipe(fd);
-	if (top->in_fd != 0)
-		read_heredoc(top, fd[1]);
-	temp = readline (">");
+	temp = readline ("> ");
 	if (temp != NULL)
 	{
 		while (ft_strncmp (temp, name, ft_strlen(temp)) != 0 \
@@ -43,13 +36,15 @@ int	check_heredoc(char *name, t_root *top)
 			write (fd[1], temp, ft_strlen(temp));
 			write (fd[1], "\n", 1);
 			free (temp);
-			temp = readline (">");
+			temp = readline ("> ");
 			if (temp == NULL)
+			{
+				g_vari.flag = 2;
 				break ;
+			}
 		}
 	}
-	if (temp != NULL)
-		free (temp);
+	check_heredoc_2(temp);
 	close (fd[1]);
 	return (fd[0]);
 }
@@ -88,7 +83,7 @@ int	do_heredoc_first(t_root *root)
 		{
 			if (ft_strncmp (node->cmd, "<<", 2) == 0)
 			{
-				top->in_fd = check_heredoc(node->redi, top);
+				top->in_fd = check_heredoc(node->redi);
 				if (top->in_fd < 0)
 					return (1);
 				top->here_doc = 1;

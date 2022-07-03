@@ -39,3 +39,13 @@ void	write_error(char *str)
 {
 	write (2, str, ft_strlen(str));
 }
+
+void	write_cd_error(int error_num, char *path)
+{
+	write_error ("Minishell: cd: ");
+	write_error (path);
+	write (2, ": ", 2);
+	write (2, strerror(error_num), ft_strlen(strerror(error_num)));
+	write (2, "\n", 1);
+	g_vari.status = error_num - 1;
+}

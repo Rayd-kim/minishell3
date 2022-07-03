@@ -23,7 +23,7 @@ void	add_env(char *args, t_list *env_list)
 	temp->next->str = ft_strdup(args);
 }
 
-int	bt_export(char **args, t_list *env_list)
+int	bt_export(char **args, t_list *env_list, t_root *top)
 {
 	int	i;
 	int	ret;
@@ -37,7 +37,8 @@ int	bt_export(char **args, t_list *env_list)
 	}
 	while (args[i] != NULL)
 	{
-		if (!check_alpha(args[i], &ret))
+		if (!check_alpha(args[i], &ret) && \
+			(top->in_fd == 0 && top->right == NULL))
 		{
 			if (check_dup(args[i], env_list))
 				add_env(args[i], env_list);
@@ -56,7 +57,7 @@ void	export_process_no_arg(t_root *top, t_list *env)
 	if (top->pid == 0)
 	{
 		set_process_fd(top, fd);
-		bt_export(top->left->right->arg, env);
+		bt_export(top->left->right->arg, env, top);
 		exit(0);
 	}
 	if (pipe_check(top) == 0)
@@ -71,7 +72,7 @@ void	export_process_arg(t_root *top, t_list *env)
 	int		fd[2];
 
 	pipe(fd);
-	g_vari.status = bt_export(top->left->right->arg, env);
+	g_vari.status = bt_export(top->left->right->arg, env, top);
 	if (pipe_check(top) == 0)
 		top->right->in_fd = fd[0];
 	if (top->in_fd != 0)
@@ -81,7 +82,7 @@ void	export_process_arg(t_root *top, t_list *env)
 
 void	export_process(t_root *top, t_list *env)
 {
-	if (top->left->right->arg == NULL)
+	if (top->left->right->arg[1] == NULL)
 		export_process_no_arg(top, env);
 	else
 		export_process_arg(top, env);

@@ -107,7 +107,8 @@ void	unset_process(t_root *top, t_list *env)
 	int		fd[2];
 
 	pipe(fd);
-	if (top->left->right->arg != NULL)
+	if (top->left->right->arg != NULL && \
+		(top->in_fd == 0 && top->right == NULL))
 		bt_unset(top->left->right->arg, env);
 	if (pipe_check(top) == 0)
 		top->right->in_fd = fd[0];

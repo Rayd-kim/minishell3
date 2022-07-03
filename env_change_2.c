@@ -28,7 +28,7 @@ int	env_len(char *path)
 
 	i = 0;
 	while (path[i] != ' ' && path[i] != '\"' && path[i] != '\0' \
-			&& path[i] != '\'' && path[i] != '?')
+			&& path[i] != '\'' && path[i] != '?' && path[i] != '$')
 		i++;
 	return (i);
 }

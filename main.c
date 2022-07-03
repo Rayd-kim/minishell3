@@ -83,6 +83,20 @@ int	show_prompt(t_root *start, t_list *env)
 	return (0);
 }
 
+void	set_flag(void)
+{
+	if (g_vari.flag > 1 && g_vari.status == 130)
+	{
+		g_vari.status = 1;
+		dup2 (g_vari.flag, 0);
+		g_vari.flag = 2;
+	}
+	else if (g_vari.flag == 2)
+		g_vari.flag = 2;
+	else
+		g_vari.flag = 0;
+}
+
 int	main(int arg, char *argv[], char **envp)
 {
 	t_root	*start;
@@ -90,6 +104,7 @@ int	main(int arg, char *argv[], char **envp)
 
 	if (arg > 1 || ft_strncmp (argv[0], "./minishell", ft_strlen(argv[0])) != 0)
 		exit (1);
+	setup_term();
 	ft_memset (&g_vari, 0, sizeof(t_vari));
 	env = make_env (envp);
 	while (1)
@@ -103,14 +118,7 @@ int	main(int arg, char *argv[], char **envp)
 			exe_cmd (start, env);
 		}
 		reset_root(start);
-		if (g_vari.flag > 2)
-		{
-			g_vari.status = 1;
-			dup2 (g_vari.flag, 0);
-			g_vari.flag = 2;
-		}
-		else
-			g_vari.flag = 0;
+		set_flag();
 	}
 	return (0);
 }

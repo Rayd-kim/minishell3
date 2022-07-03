@@ -34,7 +34,8 @@ FILE = main.c \
 		error.c \
 		check_1.c \
 		check_2.c \
-		bt_echo_and_pwd.c \
+		bt_echo.c \
+		bt_pwd.c \
 		bt_env_and_unset.c \
 		bt_exit.c \
 		bt_export_1.c \
